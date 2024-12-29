@@ -131,17 +131,10 @@ func findSpawnLocation() tinyrogue.Position {
 }
 
 func loadGameImages() {
-	floorImage := firefly.LoadFile("floor", nil).Image()
-	game.Images["floor"] = &floorImage
-
-	wallImage := firefly.LoadFile("wall", nil).Image()
-	game.Images["wall"] = &wallImage
-
-	playerImage := firefly.LoadFile("player", nil).Image()
-	game.Images["player"] = &playerImage
-
-	ghostImage := firefly.LoadFile("ghost", nil).Image()
-	game.Images["ghost"] = &ghostImage
+	game.LoadImage("floor")
+	game.LoadImage("wall")
+	game.LoadImage("player")
+	game.LoadImage("ghost")
 }
 
 func createPlayer() {

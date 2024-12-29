@@ -10,7 +10,7 @@ type Adventurer struct {
 	*combatant
 }
 
-func NewAdventurer(name string, image *firefly.Image, speed int) *Adventurer {
+func NewAdventurer(name string, image firefly.Image, speed int) *Adventurer {
 	return &Adventurer{
 		Player:    tinyrogue.NewPlayer(name, "adventurer", image, speed),
 		combatant: NewCombatant(8, 10, 8, "sword"),
@@ -22,7 +22,7 @@ type Ghost struct {
 	*combatant
 }
 
-func NewGhost(name string, image *firefly.Image, speed int) *Ghost {
+func NewGhost(name string, image firefly.Image, speed int) *Ghost {
 	return &Ghost{
 		Creature:  tinyrogue.NewCreature(name, "ghost", image, speed),
 		combatant: NewCombatant(2, 5, 4, "shriek"),
