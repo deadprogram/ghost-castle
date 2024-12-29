@@ -2,7 +2,9 @@
 
 <img src="./images/ghost.png" alt="ghost screenshot" width="480"/>
 
-Simple survival type platformer showing how to use TinyRogue to make a complete game.
+Simple survival type platformer written using TinyGo with the [TinyRogue game engine](https://github.com/deadprogram/tinyrogue) on [Firefly Zero](https://fireflyzero.com/).
+
+This repo shows how to make a complete game.
 
 <img src="./images/ghost-combat.png" alt="ghost combat screenshot" width="480"/>
 
