@@ -1,10 +1,26 @@
 # Ghost Castle
 
-<img src="../../images/ghost.png" alt="ghost example screenshot" width="480"/>
+<img src="./images/ghost.png" alt="ghost screenshot" width="480"/>
 
 Simple survival type platformer showing how to use TinyRogue to make a complete game.
 
+<img src="./images/ghost-combat.png" alt="ghost combat screenshot" width="480"/>
+
 Sir Scaredy has made a wrong turn and ended up in Ghost Castle. There is no escape now! They will have to fight to survive ever increasing numbers of ghosts appearing.
+
+## Building
+
+To build:
+
+```shell
+firefly_cli build
+```
+
+To run:
+
+```
+firefly-emulator
+```
 
 ## Code architecture
 
