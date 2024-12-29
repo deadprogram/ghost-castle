@@ -2,13 +2,13 @@
 
 <img src="./images/ghost.png" alt="ghost screenshot" width="480"/>
 
-Simple survival type platformer written using TinyGo with the [TinyRogue game engine](https://github.com/deadprogram/tinyrogue) on [Firefly Zero](https://fireflyzero.com/).
-
-This repo shows how to make a complete game.
+Sir Scaredy has made a wrong turn and ended up in Ghost Castle. There is no escape now! They will have to fight to survive ever increasing numbers of ghosts appearing.
 
 <img src="./images/ghost-combat.png" alt="ghost combat screenshot" width="480"/>
 
-Sir Scaredy has made a wrong turn and ended up in Ghost Castle. There is no escape now! They will have to fight to survive ever increasing numbers of ghosts appearing.
+This is a simple [roguelike game](https://en.wikipedia.org/wiki/Roguelike) written using [TinyGo](https://tinygo.org/) with the [TinyRogue framework](https://github.com/deadprogram/tinyrogue) for [Firefly Zero](https://fireflyzero.com/).
+
+This repo shows how to make a complete game.
 
 ## Building
 
@@ -61,6 +61,56 @@ The other is the `Ghost` type that represents the creatures that the player has 
 The game action is what controls what happens when the `Adventurer` and `Ghost` get into contact. This game uses a `CombatAction` with a pretty minimal set of rules for attack and defense.
 
 There is a `Combatant` interface defined, that has a type already defined so that the `Adventurer` and `Ghost` can embed it and pick up the standard functionality defined for the `CombatAction`.
+
+## Architecture diagram
+
+This diagram shows the relationship between the different game functions, game modes, and the game characters.
+
+```mermaid
+
+flowchart TD
+    subgraph main
+    A[Main]
+    A --> U{update}
+    A --> R{render}
+    end
+    subgraph start
+    U -->|update| US[updateStart]
+    R -->|render| RS[renderStart]
+    end
+    subgraph play
+    U -->|update| UP[game.Update]
+    R -->|render| RP[game.Render]
+    end
+    subgraph gameover
+    U -->|update| UG[updateGameover]
+    R -->|render| RO[renderGameover]
+    end
+    subgraph tinyrogue
+    subgraph characters
+    ADV(adventurer) --> PLAYER(player)
+    CREATURES[creatures] --> G1(ghost 1)
+    CREATURES --> G2(ghost 2)
+    CREATURES --> G3(ghost 3)
+    CREATURES --> GN(ghost n...)
+    end
+    subgraph levels
+    LEVELS(levels) --> L1(level 1)
+    LEVELS --> L2(level 2)
+    LEVELS --> L3(level 3)
+    LEVELS --> LN(level n...)
+    end
+    end
+    US --> characters
+    UP --> characters
+    RP --> characters
+    UG --> characters
+    
+    US --> levels
+    UP --> levels
+    RP --> levels
+    UG --> levels
+```
 
 ## Credits
 
