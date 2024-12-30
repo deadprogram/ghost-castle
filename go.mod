@@ -3,7 +3,7 @@ module ghost
 go 1.23.0
 
 require (
-	github.com/deadprogram/tinyrogue v0.1.2
+	github.com/deadprogram/tinyrogue v0.1.3
 	github.com/firefly-zero/firefly-go v0.8.0
 )
 
