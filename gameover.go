@@ -10,7 +10,6 @@ func updateGameover() {
 	pause++
 	if pause > 180 {
 		removeAllGhosts()
-		startGame()
 
 		scene = gameStart
 		pause = 0

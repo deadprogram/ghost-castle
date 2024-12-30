@@ -104,7 +104,6 @@ func (ca *CombatSystem) Action(attacker tinyrogue.Character, defender tinyrogue.
 			// if all ghosts are defeated, respawn a new batch
 			if len(game.Creatures) == 0 {
 				respawnGhost = true
-				numberGhosts++
 			}
 		}
 	}

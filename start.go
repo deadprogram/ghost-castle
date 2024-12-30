@@ -11,6 +11,8 @@ func updateStart() {
 	if pause > 60 {
 		buttons := firefly.ReadButtons(firefly.Combined)
 		if buttons.N || buttons.S || buttons.E || buttons.W {
+			startGame()
+
 			scene = gamePlay
 			pause = 0
 

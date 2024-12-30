@@ -99,8 +99,6 @@ func setupGame() {
 	gd.MaxSize = 6
 	gd.MaxRooms = 32
 	game.SetData(gd)
-
-	startGame()
 }
 
 func startGame() {
@@ -111,23 +109,13 @@ func startGame() {
 	game.SetMap(tinyrogue.NewGameMap())
 
 	createPlayer()
-	ghost := createGhost(totalGhosts)
+	ghost := createGhost()
 
 	// set player initial position
-	player.MoveTo(findSpawnLocation())
+	player.MoveTo(game.CurrentLevel().OpenLocation())
 
 	// set monster initial position
-	ghost.MoveTo(findSpawnLocation())
-}
-
-func findSpawnLocation() tinyrogue.Position {
-	l := game.Map.CurrentLevel
-	for {
-		pos, free := l.RandomLocation()
-		if free {
-			return pos
-		}
-	}
+	ghost.MoveTo(game.CurrentLevel().OpenLocation())
 }
 
 func loadGameImages() {
@@ -143,11 +131,12 @@ func createPlayer() {
 	game.SetPlayer(player)
 }
 
-func createGhost(num int) *Ghost {
-	ghost := NewGhost("Ghost-"+strconv.Itoa(num), game.Images["ghost"], 60)
+func createGhost() *Ghost {
+	ghost := NewGhost("Ghost-"+strconv.Itoa(totalGhosts), game.Images["ghost"], 60)
 	ghost.SetBehavior(tinyrogue.CreatureApproach)
 	game.AddCreature(ghost)
 
+	totalGhosts++
 	return ghost
 }
 
@@ -170,11 +159,14 @@ func respawnGhosts() {
 	respawnDelay++
 	if respawnDelay > 120 {
 		for i := 0; i < numberGhosts; i++ {
-			totalGhosts++
-			ghost := createGhost(totalGhosts)
-			ghost.MoveTo(findSpawnLocation())
+			ghost := createGhost()
+			pos := game.CurrentLevel().OpenLocation()
+			ghost.MoveTo(pos)
+			game.CurrentLevel().Block(pos.X, pos.Y, true)
 		}
 
+		// next level, increase number of ghosts to respawn
+		numberGhosts++
 		respawnGhost = false
 		respawnDelay = 0
 	}
