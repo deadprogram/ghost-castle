@@ -148,11 +148,10 @@ func removeAllGhosts() {
 	}
 }
 
-func removeGhost(gh *Ghost) {
-	game.RemoveCreature(gh)
+func removeGhost(ghost *Ghost) {
+	game.RemoveCreature(ghost)
 	level := game.Map.CurrentLevel
-	creaturePos := gh.GetPosition()
-	level.Block(creaturePos.X, creaturePos.Y, false)
+	level.Block(ghost.GetPosition(), false)
 }
 
 func respawnGhosts() {
@@ -162,7 +161,7 @@ func respawnGhosts() {
 			ghost := createGhost()
 			pos := game.CurrentLevel().OpenLocation()
 			ghost.MoveTo(pos)
-			game.CurrentLevel().Block(pos.X, pos.Y, true)
+			game.CurrentLevel().Block(pos, true)
 		}
 
 		// next level, increase number of ghosts to respawn
