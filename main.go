@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strconv"
-
 	"github.com/deadprogram/tinyrogue"
 	"github.com/firefly-zero/firefly-go/firefly"
 )
@@ -58,19 +56,7 @@ func update() {
 	case gameStart:
 		updateStart()
 	case gamePlay:
-		game.Update()
-
-		switch {
-		case game.DialogShowing:
-			// do nothing, since we might be showing "game over" dialog
-			return
-		case respawnGhost:
-			// all ghosts defeated, respawn them
-			respawnGhosts()
-		case game.Turn == tinyrogue.GameOver:
-			scene = gameOver
-			pause = 0
-		}
+		updatePlay()
 	case gameOver:
 		updateGameover()
 	}
@@ -84,89 +70,5 @@ func render() {
 		game.Render()
 	case gameOver:
 		renderGameover()
-	}
-}
-
-func setupGame() {
-	game = tinyrogue.NewGame()
-	game.UseFOV = true
-	game.SetActionSystem(&CombatSystem{})
-
-	loadGameImages()
-
-	gd := tinyrogue.NewGameData(16, 10, 16, 16)
-	gd.MinSize = 3
-	gd.MaxSize = 6
-	gd.MaxRooms = 32
-	game.SetData(gd)
-}
-
-func startGame() {
-	score = 0
-	numberGhosts = 1
-	totalGhosts = 1
-
-	game.SetMap(tinyrogue.NewGameMap())
-
-	createPlayer()
-	ghost := createGhost()
-
-	// set player initial position
-	player.MoveTo(game.CurrentLevel().OpenLocation())
-
-	// set monster initial position
-	ghost.MoveTo(game.CurrentLevel().OpenLocation())
-}
-
-func loadGameImages() {
-	game.LoadImage("floor")
-	game.LoadImage("wall")
-	game.LoadImage("player")
-	game.LoadImage("ghost")
-}
-
-func createPlayer() {
-	player = NewAdventurer("Sir Scaredy", game.Images["player"], 5)
-	player.ViewRadius = 2
-	game.SetPlayer(player)
-}
-
-func createGhost() *Ghost {
-	ghost := NewGhost("Ghost-"+strconv.Itoa(totalGhosts), game.Images["ghost"], 60)
-	ghost.SetBehavior(tinyrogue.CreatureApproach)
-	game.AddCreature(ghost)
-
-	totalGhosts++
-	return ghost
-}
-
-func removeAllGhosts() {
-	for _, c := range game.Creatures {
-		if gh, ok := c.(*Ghost); ok {
-			removeGhost(gh)
-		}
-	}
-}
-
-func removeGhost(ghost *Ghost) {
-	game.RemoveCreature(ghost)
-	level := game.Map.CurrentLevel
-	level.Block(ghost.GetPosition(), false)
-}
-
-func respawnGhosts() {
-	respawnDelay++
-	if respawnDelay > 120 {
-		for i := 0; i < numberGhosts; i++ {
-			ghost := createGhost()
-			pos := game.CurrentLevel().OpenLocation()
-			ghost.MoveTo(pos)
-			game.CurrentLevel().Block(pos, true)
-		}
-
-		// next level, increase number of ghosts to respawn
-		numberGhosts++
-		respawnGhost = false
-		respawnDelay = 0
 	}
 }

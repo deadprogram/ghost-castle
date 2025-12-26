@@ -7,6 +7,7 @@ import (
 	"github.com/firefly-zero/firefly-go/firefly"
 )
 
+// Combatant interface defines methods for characters that can engage in combat
 type Combatant interface {
 	ArmorClass() int
 	Health() int
@@ -22,6 +23,7 @@ type combatant struct {
 	weaponName  string
 }
 
+// NewCombatant creates a new combatant with specified attributes
 func NewCombatant(armorClass, health, weaponClass int, weaponName string) *combatant {
 	return &combatant{
 		armorClass:  armorClass,
@@ -31,30 +33,37 @@ func NewCombatant(armorClass, health, weaponClass int, weaponName string) *comba
 	}
 }
 
+// ArmorClass returns the armor class of the combatant
 func (c *combatant) ArmorClass() int {
 	return c.armorClass
 }
 
+// Health returns the current health of the combatant
 func (c *combatant) Health() int {
 	return c.health
 }
 
+// WeaponClass returns the weapon class of the combatant
 func (c *combatant) WeaponClass() int {
 	return c.weaponClass
 }
 
+// WeaponName returns the weapon name of the combatant
 func (c *combatant) WeaponName() string {
 	return c.weaponName
 }
 
+// Damage applies damage to the combatant and returns the remaining health
 func (c *combatant) Damage(damage int) int {
 	c.health -= damage
 	return c.health
 }
 
+// CombatSystem implements the combat mechanics between characters
 type CombatSystem struct {
 }
 
+// Action executes an attack from the attacker to the defender
 func (ca *CombatSystem) Action(attacker tinyrogue.Character, defender tinyrogue.Character) {
 	firefly.LogDebug(attacker.Name() + " is attacking " + defender.Name())
 
